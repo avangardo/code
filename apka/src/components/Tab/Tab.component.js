@@ -1,51 +1,45 @@
-import React, { Component } from 'react';
-import './Tab.component.css';
-
-
-
-const x = [{
-    id : 1,
-    name : 'Tab 1',
-    text : 'Zawartosc zakladki 1'},
-    {
-        id : 2,
-        name : 'Tab 2',
-        text : 'Zawartosc zakladki 2'},
-        {
-            id : 3,
-            name : 'Tab 3',
-            text : 'Zawartosc zakladki 3'}
-]
+import React, { Component } from "react";
+import styles from "./Tab.component.css";
 
 class Tab extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { userData: [] };
+    this.handleClick = this.handleClick.bind(this);
+  }
 
+  componentDidMount() {
+    fetch("https://randomuser.me/api/?results=1")
+      .then(response => response.json())
+      .then(userData => this.setState({ userData: userData.results }));
+  }
 
+  handleClick() {
+    fetch("https://randomuser.me/api/?results=1")
+      .then(response => response.json())
+      .then(userData =>
+        this.setState({
+          userData: this.state.userData.concat(userData.results)
+        })
+      );
+  }
 
-
-    state = {
-        activeTab : null,
-    };
-
-    handleClick = (active) => {
-            this.setState({ activeTab: 1 })
-    }
-
-    componentDidMount() {
-        console.log('Komponent has been mounted: ', this.state);
-      }
-    
-      componentDidUpdate() {
-        console.log('Komponent has been updated: ', this.state);
-      }
-
-    render() {
-        return (
-            <div>
-            <button onClick={ this.handleClick }>Tab 1</button>
-            <p>{ x}</p>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <button onClick={this.handleClick}>More</button>
+        {this.state.userData.map((user, index) => (
+          <div key={index - 1} className={styles.user}>
+            <img key={index} src={user.picture.large} alt="" />
+            <p key={index + 1}>
+              {user.name.first} {user.name.last}
+            </p>
+            <p key={index + 2}>{user.email}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
 }
 
 export default Tab;

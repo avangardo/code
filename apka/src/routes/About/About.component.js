@@ -9,7 +9,7 @@ class About extends Component {
             <div>
                 <Header name="Dzial about" />
                 <Menu />
-                <p>Zawartosc działu about</p>
+                <p>Zawartosc działu about i reload</p>
                 <Footer name="Footer" />
             </div>
             )
